@@ -1,0 +1,47 @@
+@import "../../../mixins.scss";
+
+.modal-information-section {
+  width: 275px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+  gap: 10px;
+
+  @include sm {
+    width: 240px;
+  }
+
+  .modal-information-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
+    .modal-information-item {
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: column;
+      gap: 5px;
+      width: 28%;
+      padding: 6px 10px;
+      width: fit-content;
+
+      p {
+        &:nth-child(1) {
+          font-size: 13px;
+          font-weight: 600;
+          color: #717579;
+          text-transform: capitalize;
+        }
+
+        &:nth-child(2) {
+          font-size: 16px;
+          font-weight: 600;
+          color: #3b4043;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+@import "../../../mixins.scss";
+
+.modal-footer {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 10px 20px;
+  gap: 10px;
+
+  h5 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #3b4043;
+  }
+
+  .modal-tag-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+    overflow-x: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    p {
+      color: #767676;
+      background-color: #f5f5f5;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.6;
+      text-wrap: nowrap;
+      border-radius: 3px;
+    }
+  }
+}

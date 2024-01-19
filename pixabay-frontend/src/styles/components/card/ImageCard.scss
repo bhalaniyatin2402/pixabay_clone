@@ -1,0 +1,70 @@
+@import "../../../mixins.scss";
+
+.image-card {
+  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 320px;
+  cursor: pointer;
+
+  img {
+    border-radius: 8px;
+    width: 320px;
+    height: 250px;
+  }
+
+  .image-card-tags {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    overflow-x: scroll;
+    gap: 7px;
+    text-wrap: nowrap;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    p {
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 400;
+      text-transform: capitalize;
+      color: 767676;
+      background-color: #f5f5f5;
+      border-radius: 2px;
+    }
+  }
+
+  @include lg {
+    width: 230px;
+    gap: 8px;
+    img {
+      width: 230px;
+      height: 150px;
+    }
+  }
+
+  @include md {
+    width: 260px;
+    gap: 10px;
+    img {
+      width: 260px;
+      height: 150px;
+    }
+  }
+
+  @include sm {
+    width: 180px;
+    gap: 6px;
+    img {
+      width: 180px;
+      height: 100px;
+    }
+
+    .image-card-tags {
+      gap: 5px;
+    }
+  }
+}

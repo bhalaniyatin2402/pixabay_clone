@@ -1,0 +1,60 @@
+@import "../../../mixins.scss";
+
+.search-result-section {
+  width: 100%;
+  position: absolute;
+  top: 600px;
+  left: 0;
+
+  @include sm {
+    top: 400px;
+  }
+
+  .serach-result-suggestion {
+    background-color: #f5f5f5;
+
+    .suggestion-btns {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      overflow-x: scroll;
+      gap: 10px;
+      padding: 20px 40px;
+
+      @include md {
+        padding: 10px 20px;
+      }
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      button {
+        padding: 14px 42px;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1;
+        border: 1px solid var(--black2);
+        border-radius: 4px;
+        color: #767676;
+        text-wrap: nowrap;
+
+        &:hover {
+          background-color: rgba(180, 179, 179, 0.644);
+        }
+
+        @include md {
+          padding: 7px 20px;
+        }
+      }
+    }
+  }
+
+  .search-result {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 30px 0;
+  }
+}

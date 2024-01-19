@@ -1,0 +1,97 @@
+@import "../../../mixins.scss";
+
+.modal-download-section {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+  gap: 15px;
+
+  .download-list {
+    width: 275px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    @include sm {
+      width: 240px;
+    }
+
+    .download-item {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-content: center;
+      padding: 7px 15px;
+      cursor: pointer;
+
+      .download-name {
+        font-size: 14px;
+        font-weight: 400;
+        color: #475467;
+      }
+
+      .download-select {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        p {
+          font-size: 13px;
+          font-weight: 700;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 4px;
+
+          input {
+            width: 35px;
+            background-color: transparent;
+
+            &:focus {
+              outline: none;  
+            }
+
+            &::-webkit-outer-spin-button,
+            &::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+          }
+        }
+
+        img {
+          width: 15px;
+          height: 15px;
+        }
+      }
+    }
+
+    .download-item-top {
+      border-radius: 6px 6px 0 0;
+    }
+
+    .download-item-bottom {
+      border-radius: 0 0 6px 6px;
+    }
+
+    .download-item-selected {
+      background-color: #dee8f4;
+    }
+  }
+
+  .download-btn {
+    color: #ffffff;
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+}
