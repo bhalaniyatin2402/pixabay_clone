@@ -16,9 +16,9 @@ function Drawer() {
     const res = await logout();
     if (res?.data?.success) {
       dispatch(setIsLoggedIn([false, ""]));
-      localStorage.setItem("isLoggedIn", false);
+      localStorage.setItem("isLoggedIn", "");
       localStorage.setItem("username", "");
-      navigate("/");
+      navigate("/");  
     }
   }
 
@@ -39,9 +39,11 @@ function Drawer() {
         <ul className="drawer-content menu px-4 py-3 w-[70%] max-w-[250px] min-h-full bg-[#ffffff]">
           {isLoggedIn ? (
             <>
-              <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
-                <Link to="/user/favorite">favorite</Link>
-              </p>
+              <Link to="/user/favorite" className="w-full">
+                <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
+                  favorite
+                </p>
+              </Link>
               <p
                 className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide"
                 onClick={handleLogout}
@@ -54,12 +56,16 @@ function Drawer() {
             </>
           ) : (
             <>
-              <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
-                <Link to="/login">login</Link>
-              </p>
-              <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
-                <Link to="/sign-up">Create Account</Link>
-              </p>
+              <Link to="/login" className="w-full">
+                <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
+                  login
+                </p>
+              </Link>
+              <Link to="/sign-up" className="w-full">
+                <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
+                  Create Account
+                </p>
+              </Link>
             </>
           )}
         </ul>

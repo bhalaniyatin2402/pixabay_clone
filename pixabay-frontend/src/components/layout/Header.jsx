@@ -20,7 +20,7 @@ function Header() {
     const res = await logout();
     if (res?.data?.success) {
       dispatch(setIsLoggedIn([false, ""]));
-      localStorage.setItem("isLoggedIn", false);
+      localStorage.setItem("isLoggedIn", "");
       localStorage.setItem("username", "");
       navigate("/");
     }
