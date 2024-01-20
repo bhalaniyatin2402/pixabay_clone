@@ -8,8 +8,6 @@ import { setEmptyImageList } from "../../redux/slices/imageSlice";
 
 import "../../styles/pages/home/HeroBanner.scss";
 
-let backgroundImage = "/fallback-hero-banner-image.PNG";
-
 function HeroBanner({ searchTerm, setSearchTerm }) {
   const dispatch = useDispatch();
   const [bgImage, setBgImage] = useState("");
@@ -28,7 +26,7 @@ function HeroBanner({ searchTerm, setSearchTerm }) {
     <div className="hero-banner-section">
       <Layout>
         <div className="hero-banner-background">
-          <img src={bgImage ? bgImage : backgroundImage} />
+          <img src={bgImage && bgImage} />
         </div>
         <div className="hero-banner-opacity-layer"></div>
         <Layout>

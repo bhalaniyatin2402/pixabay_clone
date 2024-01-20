@@ -39,25 +39,25 @@ function Drawer() {
         <ul className="drawer-content menu px-4 py-3 w-[70%] max-w-[250px] min-h-full bg-[#ffffff]">
           {isLoggedIn ? (
             <>
-              <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer">
+              <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
                 <Link to="/user/favorite">favorite</Link>
               </p>
               <p
-                className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer"
+                className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide"
                 onClick={handleLogout}
               >
                 logout
               </p>
-              <p className="p-2 bg-[#e7b85f] w-full text-center text-xl rounded-lg cursor-pointer">
+              <p className="p-2 bg-[#e7b85f] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
                 {username}
               </p>
             </>
           ) : (
             <>
-              <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer">
+              <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
                 <Link to="/login">login</Link>
               </p>
-              <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer">
+              <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
                 <Link to="/sign-up">Create Account</Link>
               </p>
             </>
