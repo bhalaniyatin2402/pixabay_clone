@@ -1,0 +1,25 @@
+@import "../../mixins.scss";
+
+.favorite-page {
+  h1 {
+    text-align: center;
+    font-size: 42px;
+    font-weight: bold;
+
+    @include sm {
+      font-size: 25px;
+    }
+  }
+
+  .favorite-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0;
+
+    @include sm {
+      gap: 10px;
+    }
+  }
+}

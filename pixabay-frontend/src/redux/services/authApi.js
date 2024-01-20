@@ -1,20 +1,61 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const authApi = createApi({
-  reducerPath: "auth",
+  reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${import.meta.env.VITE_APP_SERVER_API}/api/v1`,
+    baseUrl: `${import.meta.env.VITE_APP_SERVER_API}/api/user`,
     credentials: "include",
   }),
-  tagTypes: ["User", "Course"],
+  tagTypes: ["User"],
   endpoints: (builder) => ({
-    getLoggedInUserDetails: builder.query({
+    signUp: builder.mutation({
+      query: (data) => ({
+        url: "/sign-up",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    login: builder.mutation({
+      query: (data) => ({
+        url: "/login",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["User"]
+    }),
+    logout: builder.mutation({
       query: () => ({
-        url: "/user/me",
+        url: "/logout",
+        method: "GET",
+      }),
+      invalidatesTags: ["User"]
+    }),
+    getUserDetails: builder.query({
+      query: () => ({
+        url: "/me",
       }),
       providesTags: ["User"],
+    }),
+    getFavoriteList: builder.query({
+      query: () => "/favorite",
+      providesTags: [{ type: "User", id: "Favorite" }],
+    }),
+    updateFavoriteList: builder.mutation({
+      query: (data) => ({
+        url: "/favorite",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [{ type: "User", id: "Favorite" }],
     }),
   }),
 });
 
-export const { useGetLoggedInUserDetailsQuery } = authApi;
+export const {
+  useSignUpMutation,
+  useLoginMutation,
+  useLogoutMutation,
+  useGetUserDetailsQuery,
+  useGetFavoriteListQuery,
+  useUpdateFavoriteListMutation,
+} = authApi;

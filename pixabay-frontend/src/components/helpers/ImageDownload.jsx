@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import Resizer from "react-image-file-resizer";
 
-import "../../styles/components/modal/ImageDownload.scss";
+import "../../styles/components/helpers/ImageDownload.scss";
 
 function ImageDownload({ data }) {
   const customRef = useRef();
+  const [selectedSize, setSelectedSize] = useState("small");
+  const [downloading, setDownloading] = useState(false);
   const [imageDetails, setImageDetails] = useState({
     originalWidth: null,
     originalHeight: null,
@@ -12,8 +14,6 @@ function ImageDownload({ data }) {
     mediumHeight: null,
     largeHeight: null,
   });
-  const [selectedSize, setSelectedSize] = useState("small");
-  const [downloading, setDownloading] = useState(false);
   const [dimension, setDimension] = useState({
     width: "",
     height: "",
@@ -31,6 +31,7 @@ function ImageDownload({ data }) {
     });
   }, []);
 
+  // fetch image from url and get blob data
   async function getImageFromUrl(url) {
     try {
       const res = await fetch(url);
@@ -39,14 +40,15 @@ function ImageDownload({ data }) {
       if (selectedSize === "small" || selectedSize === "medium") {
         downloadImage(blob);
       } else {
-        resizeImageFromUrl(blob);
+        resizeImageFromBlob(blob);
       }
     } catch (error) {
       console.log("getImageFromUrl error: ", error);
     }
   }
 
-  function resizeImageFromUrl(blob) {
+  // resize image blob data using react-image-file-resizer
+  function resizeImageFromBlob(blob) {
     try {
       Resizer.imageFileResizer(
         blob,
@@ -56,7 +58,7 @@ function ImageDownload({ data }) {
         100,
         0,
         (uri) => {
-          changeImageProperty(uri);
+          changeImageDetailsProperty(uri);
         },
         "blob"
       );
@@ -65,20 +67,26 @@ function ImageDownload({ data }) {
     }
   }
 
-  function changeImageProperty(resizedBlob) {
+  // change image details of new resize blob data using canvas
+  function changeImageDetailsProperty(resizedBlob) {
     try {
+      // create a new canvas element and get drewing tools
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
 
+      // create new image element and assign new blob data to src
       const image = new Image();
       image.src = URL.createObjectURL(resizedBlob);
 
       image.onload = () => {
+        // set width and height of canvas
         canvas.width = dimension.width;
         canvas.height = dimension.height;
 
+        // draw an image on canvas with specifc width
         ctx.drawImage(image, 0, 0, dimension.width, dimension.height);
 
+        // convert canvas into blob data
         canvas.toBlob(
           (blob) => {
             downloadImage(blob);
@@ -92,6 +100,7 @@ function ImageDownload({ data }) {
     }
   }
 
+  // download image from blob data by creating an a tag
   async function downloadImage(blob) {
     const fileName = data?.tags?.split(",")[0];
 
@@ -113,7 +122,7 @@ function ImageDownload({ data }) {
     }
   }
 
-  function handleCustomClick() {
+  function handleCustomSizeClick() {
     const custElem = customRef.current;
     setDimension({
       width: custElem.childNodes[0].value,
@@ -150,7 +159,7 @@ function ImageDownload({ data }) {
             <div className="download-select">
               <p>640x{Math.round(imageDetails.smallHeigt)}</p>
               <img
-                src={`./checked-${
+                src={`/checked-${
                   selectedSize === "small" ? "true" : false
                 }.svg`}
               />
@@ -166,7 +175,7 @@ function ImageDownload({ data }) {
             <div className="download-select">
               <p>1280x{Math.round(imageDetails.mediumHeight)}</p>
               <img
-                src={`./checked-${
+                src={`/checked-${
                   selectedSize === "medium" ? "true" : false
                 }.svg`}
                 alt=""
@@ -186,7 +195,7 @@ function ImageDownload({ data }) {
             <div className="download-select">
               <p>1920x{Math.round(imageDetails.largeHeight)}</p>
               <img
-                src={`./checked-${selectedSize === "big" ? "true" : false}.svg`}
+                src={`/checked-${selectedSize === "big" ? "true" : false}.svg`}
                 alt=""
               />
             </div>
@@ -209,7 +218,7 @@ function ImageDownload({ data }) {
                 {imageDetails.originalWidth}x{imageDetails.originalHeight}
               </p>
               <img
-                src={`./checked-${
+                src={`/checked-${
                   selectedSize === "original" ? "true" : false
                 }.svg`}
                 alt=""
@@ -222,7 +231,7 @@ function ImageDownload({ data }) {
             } download-item-bottom border`}
             onClick={() => {
               setSelectedSize("custom");
-              handleCustomClick();
+              handleCustomSizeClick();
             }}
           >
             <p className="download-name">Custom</p>
@@ -231,7 +240,7 @@ function ImageDownload({ data }) {
                 <input
                   type="number"
                   name="width"
-                  value={dimension.width}
+                  value={Math.round(dimension.width)}
                   placeholder="eg: 900"
                   onChange={handleCustomInputChange}
                 />
@@ -240,7 +249,7 @@ function ImageDownload({ data }) {
                   type="number"
                   name="height"
                   placeholder="eg: 460"
-                  value={dimension.height}
+                  value={Math.round(dimension.height)}
                   onChange={handleCustomInputChange}
                 />
               </p>

@@ -1,9 +1,11 @@
 import { useDispatch } from "react-redux";
 import { setImageId, setImageDetailModal } from "../../redux/slices/imageSlice";
 
+import FavoriteBtn from "../helpers/FavoriteBtn";
+
 import "../../styles/components/card/ImageCard.scss";
 
-const fallbackImage = "./fallback-image.jpg";
+const fallbackImage = "/fallback-image.jpg";
 
 function ImageCard({ data }) {
   const dispatch = useDispatch();
@@ -16,6 +18,10 @@ function ImageCard({ data }) {
         dispatch(setImageDetailModal(true));
       }}
     >
+      <FavoriteBtn
+        id={data?.id}
+        className={`absolute top-3 right-3 z-20 bg-[#ffff] p-1 pb-0 rounded-lg`}
+      />
       <img src={data.webformatURL || fallbackImage} />
       <div className="image-card-tags">
         {data.tags.split(",").map((tag, i) => (

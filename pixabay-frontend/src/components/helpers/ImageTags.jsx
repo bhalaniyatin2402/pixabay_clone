@@ -1,4 +1,4 @@
-import "../../styles/components/modal/ModalFooter.scss";
+import "../../styles/components/helpers/ImageTags.scss";
 
 function ModalFooter({ data }) {
   return (

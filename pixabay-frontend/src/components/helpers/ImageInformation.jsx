@@ -1,4 +1,4 @@
-import "../../styles/components/modal/ImageInformation.scss";
+import "../../styles/components/helpers/ImageInformation.scss";
 
 function ImageInformation({ data }) {
   return (

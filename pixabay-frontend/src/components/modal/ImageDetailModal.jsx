@@ -1,15 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import ModalDownload from "./ImageDownload";
-import ModalInformation from "./ImageInformation";
-import ModalFooter from "./ModalFooter";
 import Loader from "../ui/Loader";
+import ModalDownload from "../helpers/ImageDownload";
+import ModalInformation from "../helpers/ImageInformation";
+import ImageTags from "../helpers/ImageTags";
+import FavoriteBtn from "../helpers/FavoriteBtn";
 import { setImageDetailModal } from "../../redux/slices/imageSlice";
 import { useGetImageDetailsQuery } from "../../redux/services/pixabayApi";
 
 import "../../styles/components/modal/ImageDetailModal.scss";
 
-const fallbackImage = "./fallback-image.jpg";
+const fallbackImage = "/fallback-image.jpg";
 
 function ImageDetailModal() {
   const dispatch = useDispatch();
@@ -17,10 +18,6 @@ function ImageDetailModal() {
   const { isFetching, error, data } = useGetImageDetailsQuery(imageId);
 
   if (!imageId) return;
-
-  if (error) {
-    return;
-  }
 
   if (error) {
     dispatch(setImageDetailModal(false));
@@ -37,7 +34,11 @@ function ImageDetailModal() {
       <div className="modal" role="dialog">
         <div className="modal-box w-11/12 max-w-5xl">
           <div className="modal-header">
-            <h3 className="heading-03">Preview ID: {imageId}</h3>
+            <h3 className="heading-03 hidden sm:block">
+              Preview ID: {imageId}
+            </h3>
+            <h3 className="heading-03 sm:hidden">ID: {imageId}</h3>
+            <FavoriteBtn id={imageId} className="absolute right-[55px] top-3" />
           </div>
           {isFetching ? (
             <Loader />
@@ -45,14 +46,14 @@ function ImageDetailModal() {
             <>
               <div className="modal-content">
                 <div className="modal-left-content">
-                  <img src={data?.webformatURL} />
+                  <img src={data?.webformatURL || fallbackImage} />
                 </div>
                 <div className="modal-right-content">
                   <ModalDownload data={data} />
                   <ModalInformation data={data} />
                 </div>
               </div>
-              <ModalFooter data={data} />
+              <ImageTags data={data} />
             </>
           )}
           <div className="modal-action">
@@ -62,7 +63,7 @@ function ImageDetailModal() {
                 dispatch(setImageDetailModal(false));
               }}
             >
-              <img src="./modal-close-square-btn.svg" />
+              <img src="/modal-close-square-btn.svg" />
             </button>
           </div>
         </div>

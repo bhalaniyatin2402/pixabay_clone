@@ -12,8 +12,6 @@ header {
   align-items: center;
   font-size: 18px;
   font-weight: 600;
-  color: #ffffff;
-  box-shadow: var(--box-border-shodow1);
   backdrop-filter: blur(30px);
 
   @include md {
@@ -71,6 +69,28 @@ header {
       li {
         cursor: pointer;
       }
+    }
+  }
+}
+
+.header-light {
+  box-shadow: var(--box-border-shadow1);
+  color: #ffffff;
+
+  .header-light {
+    button {
+      border: 3px solid #ffffff;
+    }
+  }
+}
+
+.header-dark {
+  box-shadow: var(--box-border-shadow2);
+  color: #000;
+
+  .header-right {
+    button {
+      border: 3px solid #00000080;
     }
   }
 }

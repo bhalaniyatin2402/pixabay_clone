@@ -38,17 +38,17 @@ function SearchResult({ searchTerm, setSearchTerm }) {
 
   if (error) {
     return (
-      <h1 className="search-result-section text-center mx-auto py-14 text-3xl font-bold">
+      <h4 className="search-result-section text-center mx-auto py-16 text-3xl font-bold">
         something went wrong!
-      </h1>
+      </h4>
     );
   }
 
   if (data?.hits.length <= 0) {
     return (
-      <h1 className="search-result-section text-center mx-auto py-14 text-3xl font-bold">
+      <h4 className="search-result-section text-center mx-auto py-16 text-3xl font-bold">
         No Results found!
-      </h1>
+      </h4>
     );
   }
 

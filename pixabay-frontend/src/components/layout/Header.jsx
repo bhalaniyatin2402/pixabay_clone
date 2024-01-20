@@ -1,22 +1,59 @@
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
 
+import Drawer from "./Drawer";
 import Layout from "./Layout";
+import { setIsLoggedIn } from "../../redux/slices/authSlice";
+import { useLogoutMutation } from "../../redux/services/authApi";
+
 import "../../styles/components/layout/Header.scss";
 
 function Header() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { isLoggedIn, username } = useSelector((state) => state.auth);
+  const [logout] = useLogoutMutation();
+
+  async function handleLogout() {
+    const res = await logout();
+    if (res?.data?.success) {
+      dispatch(setIsLoggedIn([false, ""]));
+      localStorage.setItem("isLoggedIn", false);
+      localStorage.setItem("username", "");
+      navigate("/");
+    }
+  }
+
   return (
     <>
       <Layout className="layout">
-        <header>
+        <header
+          className={`${
+            location.pathname == "/" ? "header-light" : "header-dark"
+          }`}
+        >
           <div className="header-left">
             <Link to="/">Home</Link>
           </div>
           <div className="header-right">
-            <Link to="/login">Login</Link>
-            <Link to="/sign-up">
-              <button>Create Account</button>
-            </Link>
+            {isLoggedIn ? (
+              <>
+                <Link to="/user/favorite">favorite</Link>
+                <p className="cursor-pointer" onClick={handleLogout}>
+                  logout
+                </p>
+                <button>{username}</button>
+              </>
+            ) : (
+              <>
+                <Link to="/login">Login</Link>
+                <Link to="/sign-up">
+                  <button>Create Account</button>
+                </Link>
+              </>
+            )}
           </div>
           <div className="mobile-view-header-menu">
             <label htmlFor="my-drawer">
@@ -25,28 +62,7 @@ function Header() {
           </div>
         </header>
       </Layout>
-
-      <div className="drawer">
-        <input id="my-drawer" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-side">
-          <label
-            htmlFor="my-drawer"
-            aria-label="close sidebar"
-            className="drawer-overlay"
-          ></label>
-          <ul className="drawer-content menu px-4 py-6 w-[70%] max-w-[300px] min-h-full bg-[#ffffff]">
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/sign-up">Create Account</Link>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <Drawer />
     </>
   );
 }

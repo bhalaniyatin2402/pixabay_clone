@@ -8,7 +8,7 @@ import { setEmptyImageList } from "../../redux/slices/imageSlice";
 
 import "../../styles/pages/home/HeroBanner.scss";
 
-let backgroundImage = "./fallback-hero-banner-image.PNG";
+let backgroundImage = "/fallback-hero-banner-image.PNG";
 
 function HeroBanner({ searchTerm, setSearchTerm }) {
   const dispatch = useDispatch();

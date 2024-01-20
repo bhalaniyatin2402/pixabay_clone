@@ -1,0 +1,26 @@
+@import "../../../mixins.scss";
+
+.favorite-card {
+  background-color: rgb(243, 243, 170);
+  border-radius: 10px;
+  padding: 10px 10px;
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+
+  @include sm {
+    width: 80%;
+  }
+
+  h5 {
+    font-size: 25px;
+    font-weight: 700;
+
+    span {
+      padding-left: 7px;
+      font-weight: 600;
+    }
+  }
+}
