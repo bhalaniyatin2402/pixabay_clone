@@ -101,7 +101,11 @@ export const login = asyncHandler(async (req, res, next) => {
  */
 
 export const logout = asyncHandler(async (req, res, next) => {
-  res.cookie("token", "");
+  res.cookie("token", "", {
+    sameSite: "none",
+    httpOnly: true,
+    secure: true,
+  });
 
   res.status(200).json({
     success: true,

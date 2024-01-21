@@ -9,10 +9,10 @@ import { useGetFavoriteListQuery } from "../../redux/services/authApi";
 import "../../styles/pages/Favorite.scss";
 
 function Favorite() {
-  const { isLooggedIn } = useSelector(state => state.auth)
+  const { isLoggedIn } = useSelector(state => state.auth)
   const { isLoading, error, data } = useGetFavoriteListQuery();
 
-  if(!isLooggedIn) {
+  if(!isLoggedIn) {
     return <Navigate to="/" />
   }
 
