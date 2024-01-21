@@ -29,10 +29,14 @@ const userModal = new Schema(
     },
     history: [
       {
-        imageId: String,
+        imageId: Number,
         width: Number,
         height: Number,
-        time: Date,
+        filename: String,
+        time: {
+          type: Date,
+          default: new Date(Date.now()),
+        },
       },
     ],
   },

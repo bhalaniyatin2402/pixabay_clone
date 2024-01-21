@@ -17,8 +17,8 @@ function Drawer() {
     if (res?.data?.success) {
       dispatch(setIsLoggedIn([false, ""]));
       localStorage.setItem("isLoggedIn", "");
-      localStorage.setItem("username", "");
-      navigate("/");  
+      localStorage.removeItem("username");
+      navigate("/");
     }
   }
 
@@ -39,9 +39,17 @@ function Drawer() {
         <ul className="drawer-content menu px-4 py-3 w-[70%] max-w-[250px] min-h-full bg-[#ffffff]">
           {isLoggedIn ? (
             <>
+              <p className="p-2 bg-[#e7b85f] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
+                {username}
+              </p>
               <Link to="/user/favorite" className="w-full">
                 <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
                   favorite
+                </p>
+              </Link>
+              <Link to="/user/history" className="w-full">
+                <p className="p-2 bg-[lightgray] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
+                  history
                 </p>
               </Link>
               <p
@@ -49,9 +57,6 @@ function Drawer() {
                 onClick={handleLogout}
               >
                 logout
-              </p>
-              <p className="p-2 bg-[#e7b85f] w-full text-center text-xl rounded-lg cursor-pointer text-[#000000] font-bold tracking-wide">
-                {username}
               </p>
             </>
           ) : (

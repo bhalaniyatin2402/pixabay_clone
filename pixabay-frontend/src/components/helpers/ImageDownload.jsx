@@ -1,12 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Resizer from "react-image-file-resizer";
+
+import { useAddIntoDownloadHistoryMutation } from "../../redux/services/authApi";
 
 import "../../styles/components/helpers/ImageDownload.scss";
 
 function ImageDownload({ data }) {
-  const customRef = useRef();
+  const [saveToDownloadHistory, { isLoading }] =
+    useAddIntoDownloadHistoryMutation();
   const [selectedSize, setSelectedSize] = useState("small");
   const [downloading, setDownloading] = useState(false);
+  const [customSizeError, setCustomSizeError] = useState();
   const [imageDetails, setImageDetails] = useState({
     originalWidth: null,
     originalHeight: null,
@@ -15,6 +19,10 @@ function ImageDownload({ data }) {
     largeHeight: null,
   });
   const [dimension, setDimension] = useState({
+    width: 640,
+    height: Math.round(640 / (data?.imageWidth / data?.imageHeight)),
+  });
+  const [customDimension, setCustomDimension] = useState({
     width: "",
     height: "",
   });
@@ -25,9 +33,9 @@ function ImageDownload({ data }) {
     setImageDetails({
       originalWidth: data?.imageWidth,
       originalHeight: data?.imageHeight,
-      smallHeigt: 640 / ratio,
-      mediumHeight: 1280 / ratio,
-      largeHeight: 1920 / ratio,
+      smallHeigt: Math.round(640 / ratio),
+      mediumHeight: Math.round(1280 / ratio),
+      largeHeight: Math.round(1920 / ratio),
     });
   }, []);
 
@@ -52,8 +60,8 @@ function ImageDownload({ data }) {
     try {
       Resizer.imageFileResizer(
         blob,
-        dimension.width,
-        dimension.height,
+        selectedSize === "custom" ? customDimension.width : dimension.width,
+        selectedSize === "custom" ? customDimension.height : dimension.height,
         blob?.type.split("/")[1],
         100,
         0,
@@ -80,11 +88,19 @@ function ImageDownload({ data }) {
 
       image.onload = () => {
         // set width and height of canvas
-        canvas.width = dimension.width;
-        canvas.height = dimension.height;
+        canvas.width =
+          selectedSize === "custom" ? customDimension.width : dimension.width;
+        canvas.height =
+          selectedSize === "custom" ? customDimension.height : dimension.height;
 
         // draw an image on canvas with specifc width
-        ctx.drawImage(image, 0, 0, dimension.width, dimension.height);
+        ctx.drawImage(
+          image,
+          0,
+          0,
+          selectedSize === "custom" ? customDimension.width : dimension.width,
+          selectedSize === "custom" ? customDimension.height : dimension.height
+        );
 
         // convert canvas into blob data
         canvas.toBlob(
@@ -101,19 +117,41 @@ function ImageDownload({ data }) {
   }
 
   // download image from blob data by creating an a tag
+  // save into the download into history
   async function downloadImage(blob) {
     const fileName = data?.tags?.split(",")[0];
+    let custFileName =
+      `${fileName}_${Math.round(Math.random() * 1000)}_${selectedSize}` ||
+      `resized_image_${selectedSize}`;
 
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download =
-      `${fileName}_${Math.round(Math.random() * 1000)}_${selectedSize}` ||
-      `resized_image_${selectedSize}`;
+    link.download = custFileName;
     link.click();
+    await saveToDownloadHistory({
+      imageId: data?.id,
+      width:
+        selectedSize === "custom" ? customDimension.width : dimension.width,
+      height:
+        selectedSize === "custom" ? customDimension.height : dimension.height,
+      filename: custFileName,
+    });
     setDownloading(false);
   }
 
   function handleDownload() {
+    if (selectedSize === "custom") {
+      if (customDimension.width < 10 || customDimension.height < 10) {
+        return setCustomSizeError(true);
+      } else if (
+        customDimension.width > 7000 ||
+        customDimension.height > 7000
+      ) {
+        return setCustomSizeError(true);
+      } else {
+        setCustomSizeError(false);
+      }
+    }
     setDownloading(true);
     if (selectedSize === "small") {
       getImageFromUrl(data?.webformatURL);
@@ -122,23 +160,10 @@ function ImageDownload({ data }) {
     }
   }
 
-  function handleCustomSizeClick() {
-    const custElem = customRef.current;
-    setDimension({
-      width: custElem.childNodes[0].value,
-      height: custElem.childNodes[2].value,
-    });
-  }
-
   function handleCustomInputChange(e) {
     let inputValue = e.target.value;
 
-    if (inputValue <= 1) {
-      inputValue = 1;
-    } else if (inputValue >= 7000) {
-      inputValue = 7000;
-    }
-    setDimension((state) => ({
+    setCustomDimension((state) => ({
       ...state,
       [e.target.name]: inputValue,
     }));
@@ -146,14 +171,17 @@ function ImageDownload({ data }) {
 
   return (
     <>
-      <div className="modal-download-section">
+      <div className="modal-download-section relative">
         <h3 className="heading-03">Download</h3>
         <div className="download-list">
           <div
             className={`download-item ${
               selectedSize === "small" && "download-item-selected"
             } download-item-top border`}
-            onClick={() => setSelectedSize("small")}
+            onClick={() => {
+              setSelectedSize("small");
+              setDimension({ width: 640, height: imageDetails.smallHeigt });
+            }}
           >
             <p className="download-name">Small</p>
             <div className="download-select">
@@ -169,7 +197,10 @@ function ImageDownload({ data }) {
             className={`download-item ${
               selectedSize === "medium" && "download-item-selected"
             } border`}
-            onClick={() => setSelectedSize("medium")}
+            onClick={() => {
+              setSelectedSize("medium");
+              setDimension({ width: 1280, height: imageDetails.mediumHeight });
+            }}
           >
             <p className="download-name">Medium</p>
             <div className="download-select">
@@ -231,16 +262,15 @@ function ImageDownload({ data }) {
             } download-item-bottom border`}
             onClick={() => {
               setSelectedSize("custom");
-              handleCustomSizeClick();
             }}
           >
             <p className="download-name">Custom</p>
             <div className="download-select">
-              <p ref={customRef}>
+              <p>
                 <input
                   type="number"
                   name="width"
-                  value={Math.round(dimension.width)}
+                  value={customDimension.width}
                   placeholder="eg: 900"
                   onChange={handleCustomInputChange}
                 />
@@ -249,12 +279,12 @@ function ImageDownload({ data }) {
                   type="number"
                   name="height"
                   placeholder="eg: 460"
-                  value={Math.round(dimension.height)}
+                  value={customDimension.height}
                   onChange={handleCustomInputChange}
                 />
               </p>
               <img
-                src={`./checked-${
+                src={`/checked-${
                   selectedSize === "custom" ? "true" : false
                 }.svg`}
                 alt=""
@@ -274,6 +304,11 @@ function ImageDownload({ data }) {
           )}
           Download for free
         </button>
+        {selectedSize === "custom" && customSizeError && (
+          <p className="text-red-600 absolute -bottom-[22px]">
+            value must in b/w 10 and 7000
+          </p>
+        )}
       </div>
     </>
   );

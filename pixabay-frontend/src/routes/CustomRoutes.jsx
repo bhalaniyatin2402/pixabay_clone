@@ -4,6 +4,7 @@ import Home from "../pages/home/Home";
 import Login from "../pages/login/Login";
 import SignUp from "../pages/sign-up/SignUp";
 import Favorite from "../pages/fovorite/Fovorite";
+import History from "../pages/history/History";
 
 function CustomRoutes() {
   return (
@@ -14,6 +15,7 @@ function CustomRoutes() {
       <Route path="/sign-up" element={<SignUp />} />
 
       <Route path="/user/favorite" element={<Favorite />} />
+      <Route path="/user/history" element={<History />} />
     </Routes>
   );
 }

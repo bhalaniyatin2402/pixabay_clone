@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const pixabayAccessKey = import.meta.env.VITE_APP_PIXABAY_ACCESS_KEY;
 
 export const pixabayApi = createApi({
-  reducerPath: "pixabatApi",
+  reducerPath: "pixabayApi",
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_APP_PIXABAY_API,
   }),

@@ -36,9 +36,8 @@ function Login() {
       actions.resetForm();
 
       const res = await login(values);
-      console.log(res?.data?.success);
+
       if (res?.data?.success) {
-        console.log('come here');
         localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("username", res?.data?.username);
         dispatch(setIsLoggedIn([true, res?.data?.username]));

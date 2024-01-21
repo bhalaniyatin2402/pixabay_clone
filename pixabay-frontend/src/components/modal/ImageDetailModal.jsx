@@ -1,3 +1,5 @@
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Loader from "../ui/Loader";
@@ -14,8 +16,13 @@ const fallbackImage = "/fallback-image.jpg";
 
 function ImageDetailModal() {
   const dispatch = useDispatch();
+  const location = useLocation()
   const { isOpenModal, imageId } = useSelector((state) => state.image);
   const { isFetching, error, data } = useGetImageDetailsQuery(imageId);
+
+  useEffect(() => {
+    dispatch(setImageDetailModal(false))
+  }, [location])
 
   if (!imageId) return;
 

@@ -13,7 +13,7 @@ const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [pixabayApi.reducerPath]: pixabayApi.reducer,
   },
-  devTools: import.meta.env.VITE_APP_NODE_ENV == 'development',
+  devTools: import.meta.env.VITE_APP_NODE_ENV == "development",
   middleware: (gDM) =>
     gDM().concat(authApi.middleware).concat(pixabayApi.middleware),
 });

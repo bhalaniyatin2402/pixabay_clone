@@ -1,9 +1,9 @@
 import * as yup from "yup";
 import { useState } from "react";
 import { useFormik } from "formik";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useSignUpMutation } from "../../redux/services/authApi";
-import { Link, useNavigate } from "react-router-dom";
 
 // form validation using yup
 const signUpSchema = yup.object({

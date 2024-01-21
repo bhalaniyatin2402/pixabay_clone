@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { IoMenu } from "react-icons/io5";
+import { FaBookmark } from "react-icons/fa";
 
 import Drawer from "./Drawer";
 import Layout from "./Layout";
@@ -20,8 +21,8 @@ function Header() {
     const res = await logout();
     if (res?.data?.success) {
       dispatch(setIsLoggedIn([false, ""]));
-      localStorage.setItem("isLoggedIn", "");
-      localStorage.setItem("username", "");
+      localStorage.removeItem("isLoggedIn");
+      localStorage.removeItem("username");
       navigate("/");
     }
   }
@@ -40,7 +41,10 @@ function Header() {
           <div className="header-right">
             {isLoggedIn ? (
               <>
-                <Link to="/user/favorite">favorite</Link>
+                <Link to="/user/favorite">
+                  <FaBookmark />
+                </Link>
+                <Link to="/user/history">history</Link>
                 <p className="cursor-pointer" onClick={handleLogout}>
                   logout
                 </p>

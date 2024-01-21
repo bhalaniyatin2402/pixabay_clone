@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isOpenModal: false,
   imageId: "",
-  imageList: [],
 };
 
 const image = createSlice({
@@ -16,19 +15,12 @@ const image = createSlice({
     setImageId(state, action) {
       state.imageId = action.payload;
     },
-    updateImageList(state, action) {
-      state.imageList = action.payload;
-    },
     setEmptyImageList(state, action) {
       state.imageList = [];
     },
   },
 });
 
-export const {
-  setImageDetailModal,
-  setImageId,
-  updateImageList,
-  setEmptyImageList,
-} = image.actions;
+export const { setImageDetailModal, setImageId, setEmptyImageList } =
+  image.actions;
 export default image.reducer;

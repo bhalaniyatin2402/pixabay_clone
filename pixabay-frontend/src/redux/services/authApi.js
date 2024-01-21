@@ -21,14 +21,14 @@ export const authApi = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["User"]
+      invalidatesTags: ["User"],
     }),
     logout: builder.mutation({
       query: () => ({
         url: "/logout",
         method: "GET",
       }),
-      invalidatesTags: ["User"]
+      invalidatesTags: ["User"],
     }),
     getUserDetails: builder.query({
       query: () => ({
@@ -48,6 +48,26 @@ export const authApi = createApi({
       }),
       invalidatesTags: [{ type: "User", id: "Favorite" }],
     }),
+    getDownloadHistory: builder.query({
+      query: () => "/history",
+      providesTags: [{ type: "User", id: "History" }],
+    }),
+    addIntoDownloadHistory: builder.mutation({
+      query: (data) => ({
+        url: "/history",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [{ type: "User", id: "History" }],
+    }),
+    removeFromDownloadHistory: builder.mutation({
+      query: (data) => ({
+        url: "/history",
+        method: "DELETE",
+        body: data,
+      }),
+      invalidatesTags: [{ type: "User", id: "History" }],
+    }),
   }),
 });
 
@@ -58,4 +78,7 @@ export const {
   useGetUserDetailsQuery,
   useGetFavoriteListQuery,
   useUpdateFavoriteListMutation,
+  useGetDownloadHistoryQuery,
+  useAddIntoDownloadHistoryMutation,
+  useRemoveFromDownloadHistoryMutation,
 } = authApi;
