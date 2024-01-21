@@ -1,3 +1,6 @@
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+
 import Layout from "../../components/layout/Layout";
 import Loader from "../../components/ui/Loader";
 import FavoriteCard from "../../components/card/FavoriteCard";
@@ -6,7 +9,12 @@ import { useGetFavoriteListQuery } from "../../redux/services/authApi";
 import "../../styles/pages/Favorite.scss";
 
 function Favorite() {
+  const { isLooggedIn } = useSelector(state => state.auth)
   const { isLoading, error, data } = useGetFavoriteListQuery();
+
+  if(!isLooggedIn) {
+    return <Navigate to="/" />
+  }
 
   if (isLoading) {
     return <Loader />;

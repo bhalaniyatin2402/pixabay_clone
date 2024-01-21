@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 
 import Layout from "../../components/layout/Layout";
@@ -10,10 +12,15 @@ import {
 
 function History() {
   const { isLoading, error, data } = useGetDownloadHistoryQuery();
+  const { isLoggedIn } = useSelector((state) => state.auth);
   const [selectionModel, setSelectionModel] = useState([]);
   const [selectedHistoryIds, setSelectedHistoryIds] = useState([]);
   const [removeFromDownload, { isLoading: loading }] =
     useRemoveFromDownloadHistoryMutation();
+
+  if (!isLoggedIn) {
+    return <Navigate to="/" />;
+  }
 
   if (isLoading) {
     return <Loader />;
